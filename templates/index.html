@@ -1,0 +1,78 @@
+{% extends  "base.html" %}
+
+{% block title%}
+
+home page
+
+{% endblock title   %}
+
+
+{% block content %} 
+<div class = 'p-4'>
+ <div class = 'text-center  mb-3' >
+     {% if request.user.is_authenticated %}
+       <a class ='btn btn-success'  href="{% url "post_create" %}">add new post</a>
+       <a class ='btn btn-success'  href="{% url "post_create_random" %}">add random post</a>
+     {% endif %}
+ </div>
+ <h1> News about the Georgian national team</h1>
+    
+       
+  
+
+  <div class ="row  row-cols-3 g-3">
+     {% if not posts %}
+     
+        <p> NO NEWS YET </p>
+    
+     {% endif %}
+
+  {% for  post in posts %}
+  <div class = 'col' >
+ 
+
+     <div class="card"  style="width:25rem;" >
+         <img src="http://nakrebi.ge/assets/images/og-img.png?v=0.456" class="card-img-top" alt="...">
+         <div class="card-body">
+         <h5 class="card-title">{{post.title }}</h5>
+        
+          <div class="card-text">
+           <span class = 'badge bg-primary'  >{{ post.created_at}} </span>  <a href = "{% url 'user_profile' post.author.pk %}" >{{post.author}} </a>
+
+         <p> 
+
+          {{post.content | truncatechars:30}}
+
+         </p>
+      </div>
+      
+        {% if post.author == request.user %}
+          <a href = "{% url 'post_delete' post.pk %}" class ="btn btn-danger">delete</a>
+          <a href = "{% url 'post_update' post.pk %}" class ="btn btn-warning">Edit</a>
+        {% endif %}
+        <a href = "{% url 'post_detail' post.pk %}" class ="btn btn-primary">see more</a>
+      
+
+     
+        </div>
+      </div>
+  </div>
+  {% endfor %}
+ </div>
+</div>
+<div class = 'max-auto   text-center'>
+  {% for page_number in page_obj.paginator.get_elided_page_range %}
+             {% if page_number == page_obj.paginator.ELLIPSIS %}
+                 {{ page_number }}
+             {% else %}
+                 <a
+                         href="{% url 'home' %}?page={{ page_number }}&q={{ request.GET.q }}"
+                         class="{% if page_number == page_obj.number %}current{% endif %} btn btn-primary    "
+                 >
+                     {{ page_number }}
+                 </a>
+             {% endif %}
+         {% endfor %}
+</div>
+{% endblock %}
+   

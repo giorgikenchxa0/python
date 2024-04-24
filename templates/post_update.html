@@ -1,0 +1,22 @@
+{% extends  'base.html'  %}
+{%  block title %}
+
+update {{'post.title'}}
+
+{% endblock title %}
+{% block content %}
+
+<h1> post update</h1>
+
+<form  method ="post" >
+    {% csrf_token %} 
+ 
+    {{form.as_p}}
+
+   <button class ="btn btn-warning">update</button>
+   <a  href = "{{request.META.HTTP_REFERER}}", class = 'btn btn-success'>Back</a>
+   <a href = "{% url 'post_delete' post.pk %}" class ="btn btn-danger">delete</a>
+
+</form>
+{% endblock %}
+   

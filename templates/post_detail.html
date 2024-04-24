@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+
+{% block title %}
+
+     {{'post.title'}}
+
+{%  endblock title %}
+
+{% block content %}
+<h1>{{post.title}}</h1>
+
+     {% if post.author == request.user %}
+         <a href = "{% url 'post_update' post.pk %}" class ="btn btn-warning">Edit</a>
+         <a href = "{% url 'post_detail' post.pk %}" class ="btn btn-primary">see more</a>
+         <a href = "{% url 'post_delete' post.pk %}" class ="btn btn-danger">delete</a>
+    {% endif %}
+    <a  href = "{% url 'home'  %}", class = 'btn btn-success'>Back</a>
+
+<span> {{post.created_at}} by {{post.author}} </span>
+
+<p> {{post.content}} </p>
+
+  
+  <div>
+
+    {% for comment in post.comment_set.all  %}
+       <div class = 'border border-primary  rounded mb-3 p-2 max-auto w-25 shadow'>
+           
+        <p> {{comment.content}}</p>
+        <p>{{comment.create_date}}  by {{comment.user.username}}</p>
+
+       </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

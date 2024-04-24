@@ -1,0 +1,3 @@
+Migrations for 'forum':
+  forum\migrations\0002_comment.py
+    - Create model Comment
